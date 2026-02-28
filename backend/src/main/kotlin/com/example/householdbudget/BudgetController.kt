@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/budget")
-@CrossOrigin(origins = ["*"])
+@CrossOrigin(origins = ["*"], methods = [RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.OPTIONS])
 class BudgetController {
 
     // Simple in-memory storage for now
@@ -43,5 +43,13 @@ class BudgetController {
         )
         transactions.add(transaction)
         return transaction
+    }
+
+    @DeleteMapping("/{yearMonth}/transactions/{id}")
+    fun deleteTransaction(
+        @PathVariable yearMonth: String,
+        @PathVariable id: String
+    ) {
+        transactions.removeIf { it.id == id && it.yearMonth == yearMonth }
     }
 }

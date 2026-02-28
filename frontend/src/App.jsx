@@ -79,6 +79,21 @@ function App() {
       })
   }
 
+  const deleteTransaction = (id) => {
+    fetch(`http://localhost:8081/api/budget/${currentMonth}/transactions/${id}`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to delete transaction')
+        // Refresh the data!
+        fetchMonthData(currentMonth);
+      })
+      .catch(err => {
+        console.error("Error deleting transaction", err)
+        alert("Failed to delete transaction!")
+      })
+  }
+
   return (
     <div className="app-container">
       <header className="header">
@@ -176,7 +191,10 @@ function App() {
                   {budgetData?.incomes.map(inc => (
                     <li key={inc.id} className="transaction-item income-item">
                       <span className="desc">{inc.description}</span>
-                      <span className="val">+${inc.amount.toFixed(2)}</span>
+                      <div className="action-group">
+                        <span className="val">+${inc.amount.toFixed(2)}</span>
+                        <button className="delete-btn" onClick={() => deleteTransaction(inc.id)} aria-label="Delete transaction">&times;</button>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -192,7 +210,10 @@ function App() {
                   {budgetData?.expenses.map(exp => (
                     <li key={exp.id} className="transaction-item expense-item">
                       <span className="desc">{exp.description}</span>
-                      <span className="val">-${exp.amount.toFixed(2)}</span>
+                      <div className="action-group">
+                        <span className="val">-${exp.amount.toFixed(2)}</span>
+                        <button className="delete-btn" onClick={() => deleteTransaction(exp.id)} aria-label="Delete transaction">&times;</button>
+                      </div>
                     </li>
                   ))}
                 </ul>
