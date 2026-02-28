@@ -6,7 +6,7 @@ function App() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/hello')
+    fetch('http://localhost:8081/api/hello')
       .then(res => {
         if (!res.ok) {
           throw new Error('Network response was not ok')
@@ -28,7 +28,7 @@ function App() {
           <p className="subtitle">Track your finances with ease</p>
         </div>
       </header>
-      
+
       <main className="main-content">
         <section className="status-card">
           <h2>Backend Status</h2>
