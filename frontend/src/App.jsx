@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+
 function App() {
   const [currentMonth, setCurrentMonth] = useState(() => {
     const defaultDate = new Date();
@@ -23,7 +25,7 @@ function App() {
 
   const fetchMonthData = (yearMonth) => {
     setLoading(true)
-    fetch(`http://localhost:8081/api/budget/${yearMonth}`)
+    fetch(`${API_BASE_URL}/api/budget/${yearMonth}`)
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch budget data')
         return res.json()
@@ -53,7 +55,7 @@ function App() {
 
     setFormConfig(true)
 
-    fetch(`http://localhost:8081/api/budget/${currentMonth}/transactions`, {
+    fetch(`${API_BASE_URL}/api/budget/${currentMonth}/transactions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -80,7 +82,7 @@ function App() {
   }
 
   const deleteTransaction = (id) => {
-    fetch(`http://localhost:8081/api/budget/${currentMonth}/transactions/${id}`, {
+    fetch(`${API_BASE_URL}/api/budget/${currentMonth}/transactions/${id}`, {
       method: 'DELETE'
     })
       .then(res => {
